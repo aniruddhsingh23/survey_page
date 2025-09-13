@@ -23,14 +23,17 @@
             border-radius: 1.5rem;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
             width: 100%;
-            max-width: 38rem;
-            padding: 2rem;
+            max-width: 1100px; /* wider card for laptop */
+            padding: 2.25rem;
+            margin: 1rem;
         }
 
         .question-section {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 2.5rem;
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 1rem 1.5rem;
+            align-items: start;
+            margin-bottom: 2rem;
         }
 
         .question-number {
@@ -44,7 +47,7 @@
             align-items: center;
             font-weight: 600;
             flex-shrink: 0;
-            margin-right: 1.5rem;
+            margin-right: 0;
             font-size: 1.125rem;
         }
 
@@ -105,7 +108,7 @@
         .image-selection-container {
             display: flex;
             gap: 1.5rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
 
         .image-option {
@@ -115,7 +118,7 @@
             border-radius: 1rem;
             overflow: hidden;
             border: 3px solid transparent;
-            transition: border-color 0.3s;
+            transition: border-color 0.3s, transform 0.2s;
         }
 
         .image-option.selected {
@@ -124,9 +127,11 @@
 
         .image-option img {
             width: 100%;
-            height: auto;
+            height: 220px;
+            object-fit: cover;
             border-radius: 1rem;
             display: block;
+            transition: transform 0.25s;
         }
 
         .image-selection-indicator {
@@ -168,6 +173,32 @@
             flex-wrap: wrap;
             gap: 0.75rem;
             margin-top: 1.5rem;
+        }
+
+        /* Progress bar */
+        .progress-wrap {
+            width: 100%;
+            background: linear-gradient(90deg, #eef2ff, #f3f4f6);
+            border-radius: 9999px;
+            padding: 6px;
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: linear-gradient(90deg, #5CB66C, #3AA35A);
+            border-radius: 9999px;
+            width: 0%;
+            transition: width 300ms ease;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            color: #6b7280;
+            font-size: 0.9rem;
         }
 
         .tag-button {
@@ -394,6 +425,7 @@
                 imageOptions.forEach(opt => opt.classList.remove('selected'));
                 // Add 'selected' class to the clicked image option
                 option.classList.add('selected');
+                updateProgress();
             });
         });
 
@@ -402,7 +434,66 @@
         tagButtons.forEach(button => {
             button.addEventListener('click', () => {
                 button.classList.toggle('selected');
+                updateProgress();
             });
+        });
+
+        // Progress handling
+        function getSliderAnswered(slider) {
+            // Consider answered if different from default 50
+            return slider && slider.value && slider.value !== '50';
+        }
+
+        function updateProgress() {
+            const sliders = [document.getElementById('healthSlider'), document.getElementById('activitySlider'), document.getElementById('tiredSlider')];
+            let answered = 0;
+
+            sliders.forEach(s => { if (getSliderAnswered(s)) answered++; });
+            if (document.querySelector('.image-option.selected')) answered++;
+            // Consider question 5 and 6 answered when any tag-button in that question toggled
+            const q5 = Array.from(document.querySelectorAll('.question-section'))[4];
+            const q6 = Array.from(document.querySelectorAll('.question-section'))[5];
+            const q7 = Array.from(document.querySelectorAll('.question-section'))[6];
+
+            function tagsAnswered(section) {
+                if (!section) return false;
+                const tags = section.querySelectorAll('.tag-button');
+                return Array.from(tags).some(t => t.classList.contains('selected'));
+            }
+
+            if (tagsAnswered(q5)) answered++;
+            if (tagsAnswered(q6)) answered++;
+            if (tagsAnswered(q7)) answered++;
+
+            const total = 7; // number of questions
+            const percent = Math.round((answered / total) * 100);
+            let bar = document.querySelector('.progress-bar');
+            if (bar) bar.style.width = percent + '%';
+            let pctText = document.querySelector('#progressPercent');
+            if (pctText) pctText.textContent = percent + '%';
+        }
+
+        // Wire sliders to progress updates
+        ['healthSlider','activitySlider','tiredSlider'].forEach(id => {
+            const s = document.getElementById(id);
+            if (s) s.addEventListener('input', updateProgress);
+        });
+
+        // initialize progress after DOM load
+        window.addEventListener('load', () => {
+            // insert progress UI at top of card
+            const card = document.querySelector('.survey-card');
+            if (card) {
+                const meta = document.createElement('div');
+                meta.className = 'progress-meta';
+                meta.innerHTML = '<div>Progress</div><div id="progressPercent">0%</div>';
+                const wrap = document.createElement('div');
+                wrap.className = 'progress-wrap';
+                wrap.innerHTML = '<div class="progress-bar"></div>';
+                card.insertBefore(meta, card.firstChild);
+                card.insertBefore(wrap, card.firstChild.nextSibling);
+            }
+            updateProgress();
         });
     </script>
 
