@@ -22,7 +22,7 @@
         .survey-container {
             display: flex;
             width: 100%;
-            max-width: 1200px;
+            max-width: 1521px; /* Increased width as requested */
             background-color: white;
             border-radius: 1.5rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -32,22 +32,20 @@
 
         .left-panel {
             flex: 1;
-            background: #d4eaf5;
+            background-color: white;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 3rem;
-            background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,100 Q50,50 100,100 V0 H0 Z" fill="%23cbe1f0" /></svg>');
-            background-size: cover;
-            background-position: center;
             color: #1f2937;
         }
-
+        
+        /* The split image goes here */
         .left-panel img {
-            max-width: 80%;
+            max-width: 100%; 
             height: auto;
-            margin-bottom: 2rem;
+            display: block;
         }
 
         .right-panel {
@@ -287,9 +285,7 @@
 
     <div class="survey-container">
         <div class="left-panel">
-            <h1 class="logo">MantraPath</h1>
-            <h3 class="mt-4 text-xl text-center font-medium">Your AI-powered wellness companion</h3>
-            <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Illustration+Goes+Here" alt="Illustration">
+            <img src="Gemini_Generated_Image_a77w67a77w67a77w.jpg" alt="Data and Analytics Illustration">
         </div>
 
         <div class="right-panel">
