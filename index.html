@@ -22,7 +22,7 @@
         .survey-container {
             display: flex;
             width: 100%;
-            max-width: 1521px; /* Increased width as requested */
+            max-width: 1521px;
             background-color: white;
             border-radius: 1.5rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
@@ -41,7 +41,6 @@
             color: #1f2937;
         }
         
-        /* The split image goes here */
         .left-panel img {
             max-width: 100%; 
             height: auto;
@@ -248,14 +247,16 @@
         .manual-answer-container {
             margin-top: 1rem;
             display: none;
+            align-items: flex-end;
+            gap: 1rem;
         }
-
+        
         .manual-answer-container.active {
-            display: block;
+            display: flex;
         }
 
         .manual-answer-container textarea {
-            width: 100%;
+            flex: 1;
             min-height: 100px;
             padding: 0.75rem;
             border: 1px solid #d1d5db;
@@ -263,6 +264,16 @@
             font-size: 1rem;
             font-family: 'Inter', sans-serif;
             resize: vertical;
+        }
+
+        .manual-answer-container .submit-manual-answer {
+            padding: 0.75rem 1.5rem;
+            background-color: #5CB66C;
+            color: white;
+            border-radius: 9999px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
         }
 
         @media (max-width: 768px) {
@@ -277,6 +288,11 @@
             .right-panel {
                 padding: 2rem;
             }
+
+            .manual-answer-container {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -285,7 +301,7 @@
 
     <div class="survey-container">
         <div class="left-panel">
-            <img src="Gemini_Generated_Image_a77w67a77w67a77w.jpg" alt="Data and Analytics Illustration">
+            <img src="./split image.png" alt="Data and Analytics Illustration">
         </div>
 
         <div class="right-panel">
@@ -313,6 +329,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -334,6 +351,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -353,6 +371,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -374,6 +393,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -389,6 +409,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -404,6 +425,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
 
@@ -425,6 +447,7 @@
                     <button class="toggle-manual-answer">Manually Enter Your Answer</button>
                     <div class="manual-answer-container">
                         <textarea placeholder="Type your answer here..."></textarea>
+                        <button class="submit-manual-answer">Submit Answer</button>
                     </div>
                 </div>
             </div>
@@ -454,7 +477,7 @@
             });
         });
 
-        // Manual Answer Toggle
+        // Manual Answer Toggle and Submission
         document.querySelectorAll('.toggle-manual-answer').forEach(button => {
             button.addEventListener('click', () => {
                 const container = button.nextElementSibling;
@@ -463,6 +486,20 @@
                     button.textContent = 'Hide Manual Answer';
                 } else {
                     button.textContent = 'Manually Enter Your Answer';
+                }
+            });
+        });
+
+        // Handle submission of individual manual answers (for demonstration)
+        document.querySelectorAll('.submit-manual-answer').forEach(button => {
+            button.addEventListener('click', () => {
+                const textarea = button.previousElementSibling;
+                const answer = textarea.value;
+                if (answer.trim() !== '') {
+                    alert('Manual answer submitted for this question: ' + answer);
+                    // Here you would typically send this data to a server
+                } else {
+                    alert('Please type an answer before submitting.');
                 }
             });
         });
