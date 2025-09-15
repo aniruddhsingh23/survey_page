@@ -29,35 +29,46 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
             overflow: hidden;
             margin: 1rem;
-            align-items: stretch;
         }
 
         .left-panel {
-            flex: 1;
-            background: #d4eaf5;
+            width: 40%;
+            height: 864px;
+            position: relative;
+            background-image: url('Gemini_Generated_Image_a77w67a77w67a77w.jpg');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+        }
+
+        .left-panel-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 3rem;
-            color: #1f2937;
-            position: relative;
-            text-align: center;
-            height: 100%; /* Make the left panel take the full height */
-            position: fixed; /* Make the left panel fixed */
-        }
-
-        .left-panel-content {
-            position: relative;
-            z-index: 1;
-            padding: 1.5rem;
-            border-radius: 1rem;
-            background-color: rgba(255, 255, 255, 0.2);
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
         }
         
+        .left-panel-content {
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
         .feature-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -71,6 +82,11 @@
             flex-direction: column;
             align-items: flex-start;
             text-align: left;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         .feature-icon {
@@ -82,15 +98,14 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-top: 0.5rem;
-            color: #1a202c;
+            color: white;
         }
         
         .feature-description {
             font-size: 0.875rem;
-            color: #4a5568;
+            color: rgba(255, 255, 255, 0.8);
             margin-top: 0.25rem;
         }
-
 
         .right-panel {
             flex: 1;
@@ -98,14 +113,8 @@
             display: flex;
             flex-direction: column;
             gap: 2rem;
-            overflow-y: auto; /* Make the right panel scrollable */
-            margin-left: 50%; /* Adjust margin to account for fixed left panel */
-        }
-
-        .logo {
-            font-size: 2.25rem;
-            font-weight: 700;
-            color: #1f2937;
+            overflow-y: auto;
+            width: 60%;
         }
 
         .survey-header {
@@ -323,51 +332,55 @@
             border: none;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .survey-container {
                 flex-direction: column;
+                height: auto;
             }
 
             .left-panel {
-                display: none;
+                width: 100%;
+                height: 400px;
             }
 
             .right-panel {
-                padding: 2rem;
-                margin-left: 0;
+                width: 100%;
+                overflow-y: visible;
             }
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-ieD4A4B1D61d2Rj8hR1L5fB7y2Xj9d5D6d4O5t6t6d4k5w9g8f9f7i6w8y5e2j9f3E6g6d4Q8f9f7" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
 
     <div class="survey-container">
         <div class="left-panel">
-            <div class="left-panel-content">
-                <h1 class="logo">MantraPath</h1>
-                <h3 class="mt-4 text-xl text-center font-medium">Your AI-powered wellness companion</h3>
-                <div class="feature-grid">
-                    <div class="feature-item">
-                        <i class="fas fa-brain feature-icon"></i>
-                        <h4 class="feature-title">AI-Driven Insights</h4>
-                        <p class="feature-description">Personalized mental health insights from our advanced AI.</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-heartbeat feature-icon"></i>
-                        <h4 class="feature-title">Physical Health Tracking</h4>
-                        <p class="feature-description">Monitor your activities and get actionable health tips.</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-cloud-moon feature-icon"></i>
-                        <h4 class="feature-title">Mindfulness & Sleep</h4>
-                        <p class="feature-description">Guided meditations and sleep stories to improve rest.</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-comments feature-icon"></i>
-                        <h4 class="feature-title">Supportive Community</h4>
-                        <p class="feature-description">Connect with others on their wellness journey.</p>
+            <div class="left-panel-overlay">
+                <div class="left-panel-content">
+                    <h1 class="logo">MantraPath</h1>
+                    <h3 class="mt-4 text-xl text-center font-medium">Your AI-powered wellness companion</h3>
+                    <div class="feature-grid">
+                        <div class="feature-item">
+                            <i class="fas fa-brain feature-icon"></i>
+                            <h4 class="feature-title">AI-Driven Insights</h4>
+                            <p class="feature-description">Personalized mental health insights from our advanced AI.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-heartbeat feature-icon"></i>
+                            <h4 class="feature-title">Physical Health Tracking</h4>
+                            <p class="feature-description">Monitor your activities and get actionable health tips.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-cloud-moon feature-icon"></i>
+                            <h4 class="feature-title">Mindfulness & Sleep</h4>
+                            <p class="feature-description">Guided meditations and sleep stories to improve rest.</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-comments feature-icon"></i>
+                            <h4 class="feature-title">Supportive Community</h4>
+                            <p class="feature-description">Connect with others on their wellness journey.</p>
+                        </div>
                     </div>
                 </div>
             </div>
