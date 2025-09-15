@@ -4,64 +4,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Survey</title>
+    <title>MantraPath Survey</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
+            background-color: #eef2f9;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 2rem 0;
+            color: #1a202c;
         }
 
-        .survey-card {
+        .survey-container {
+            display: flex;
+            width: 100%;
+            max-width: 1200px;
             background-color: white;
             border-radius: 1.5rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            width: 100%;
-            max-width: 1100px; /* wider card for laptop */
-            padding: 2.25rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
             margin: 1rem;
         }
 
-        .question-section {
-            display: grid;
-            grid-template-columns: 56px 1fr;
-            gap: 1rem 1.5rem;
-            align-items: start;
+        .left-panel {
+            flex: 1;
+            background: #d4eaf5;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100%" height="100%" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><path d="M0,100 Q50,50 100,100 V0 H0 Z" fill="%23cbe1f0" /></svg>');
+            background-size: cover;
+            background-position: center;
+            color: #1f2937;
+        }
+
+        .left-panel img {
+            max-width: 80%;
+            height: auto;
             margin-bottom: 2rem;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .survey-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .survey-header h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .survey-header p {
+            font-size: 1rem;
+            color: #6b7280;
+            margin-top: 0.5rem;
+        }
+
+        .question-section {
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .question-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
         }
 
         .question-number {
             background-color: #5CB66C;
             color: white;
-            width: 2.25rem;
-            height: 2.25rem;
+            width: 2rem;
+            height: 2rem;
             border-radius: 9999px;
             display: flex;
             justify-content: center;
             align-items: center;
             font-weight: 600;
+            font-size: 1rem;
             flex-shrink: 0;
-            margin-right: 0;
-            font-size: 1.125rem;
         }
 
         .question-text {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 600;
             color: #1f2937;
         }
 
-        .slider-container {
-            width: 100%;
-            position: relative;
-            margin-top: 1.5rem;
-            padding: 0 0.5rem;
+        .slider-container,
+        .image-selection-container,
+        .tag-container {
+            margin-top: 1rem;
         }
 
         .slider {
@@ -73,21 +134,12 @@
             outline: none;
             border-radius: 9999px;
             transition: background 0.2s;
+            cursor: pointer;
         }
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
-            width: 1.5rem;
-            height: 1.5rem;
-            background: #5CB66C;
-            border: 4px solid white;
-            border-radius: 9999px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .slider::-moz-range-thumb {
             width: 1.5rem;
             height: 1.5rem;
             background: #5CB66C;
@@ -108,7 +160,6 @@
         .image-selection-container {
             display: flex;
             gap: 1.5rem;
-            margin-top: 1rem;
         }
 
         .image-option {
@@ -131,78 +182,16 @@
             object-fit: cover;
             border-radius: 1rem;
             display: block;
-            transition: transform 0.25s;
-        }
-
-        .image-selection-indicator {
-            position: absolute;
-            top: 0.75rem;
-            right: 0.75rem;
-            width: 1.5rem;
-            height: 1.5rem;
-            background-color: white;
-            border: 2px solid #ccc;
-            border-radius: 9999px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
-
-        .image-option.selected .image-selection-indicator {
-            background-color: #5CB66C;
-            border-color: #5CB66C;
-        }
-
-        .image-selection-indicator::after {
-            content: '';
-            width: 0.5rem;
-            height: 0.5rem;
-            background-color: white;
-            border-radius: 9999px;
-            transform: scale(0);
-            transition: transform 0.3s;
-        }
-
-        .image-option.selected .image-selection-indicator::after {
-            transform: scale(1);
         }
 
         .tag-container {
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        /* Progress bar */
-        .progress-wrap {
-            width: 100%;
-            background: linear-gradient(90deg, #eef2ff, #f3f4f6);
-            border-radius: 9999px;
-            padding: 6px;
-            margin-bottom: 1.5rem;
-        }
-
-        .progress-bar {
-            height: 12px;
-            background: linear-gradient(90deg, #5CB66C, #3AA35A);
-            border-radius: 9999px;
-            width: 0%;
-            transition: width 300ms ease;
-        }
-
-        .progress-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.75rem;
-            color: #6b7280;
-            font-size: 0.9rem;
         }
 
         .tag-button {
-            background-color: #e5e7eb;
+            background-color: #f3f4f6;
             color: #4b5563;
             padding: 0.5rem 1.25rem;
             border-radius: 9999px;
@@ -219,36 +208,11 @@
             color: white;
         }
 
-        @media (max-width: 640px) {
-            .survey-card {
-                padding: 1.5rem;
-            }
-
-            .question-section {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .question-number {
-                margin-right: 0;
-                margin-bottom: 0.75rem;
-            }
-
-            .question-text {
-                font-size: 1.125rem;
-            }
-
-            .image-selection-container {
-                flex-direction: column;
-            }
-        }
-
         .action-buttons {
             display: flex;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 1rem;
-            margin-top: 3rem;
+            margin-top: 2rem;
         }
 
         .action-button {
@@ -256,6 +220,7 @@
             border-radius: 9999px;
             font-weight: 600;
             transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+            cursor: pointer;
         }
 
         .action-button.primary {
@@ -264,236 +229,246 @@
         }
 
         .action-button.secondary {
-            background-color: #f3f4f6;
+            background-color: #e5e7eb;
             color: #4b5563;
+        }
+
+        .toggle-manual-answer {
+            background-color: #f3f4f6;
+            color: #6b7280;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            align-self: flex-start;
+            margin-top: 1rem;
+        }
+
+        .manual-answer-container {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .manual-answer-container.active {
+            display: block;
+        }
+
+        .manual-answer-container textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            resize: vertical;
+        }
+
+        @media (max-width: 768px) {
+            .survey-container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="survey-card">
-
-        <div class="mb-8 text-center">
-            <h2 class="text-3xl font-bold text-gray-800">Your Health Survey</h2>
-            <h3 class="text-lg text-gray-500 mt-2">Please take a few minutes to complete this survey to help us
-                understand your health profile.</h3>
+    <div class="survey-container">
+        <div class="left-panel">
+            <h1 class="logo">MantraPath</h1>
+            <h3 class="mt-4 text-xl text-center font-medium">Your AI-powered wellness companion</h3>
+            <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Illustration+Goes+Here" alt="Illustration">
         </div>
 
-        <!-- Question 1: Health Slider -->
-        <div class="question-section">
-            <div class="question-number">1</div>
-            <div class="flex-1">
-                <h2 class="question-text">HOW'S YOUR HEALTH?</h2>
-                <div class="slider-container">
-                    <input type="range" min="0" max="100" value="50" class="slider" id="healthSlider">
-                    <div class="slider-labels">
-                        <span>Poor</span>
-                        <span>Could be better</span>
-                        <span>Average</span>
-                        <span>Good</span>
-                        <span>Excellent</span>
+        <div class="right-panel">
+            <div class="survey-header">
+                <h2>Your Health Survey</h2>
+                <p>Please take a few minutes to complete this survey to help us understand your health profile.</p>
+            </div>
+
+            <div class="questions-list">
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">1</div>
+                        <h2 class="question-text">HOW'S YOUR HEALTH?</h2>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="50" class="slider" id="healthSlider">
+                        <div class="slider-labels">
+                            <span>Poor</span>
+                            <span>Could be better</span>
+                            <span>Average</span>
+                            <span>Good</span>
+                            <span>Excellent</span>
+                        </div>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">2</div>
+                        <h2 class="question-text">HOW ACTIVE ARE YOU?</h2>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="50" class="slider" id="activitySlider">
+                        <div class="slider-labels">
+                            <span>Very Inactive</span>
+                            <span>Inactive</span>
+                            <span>Average</span>
+                            <span>Active</span>
+                            <span>Very Active</span>
+                        </div>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">3</div>
+                        <h2 class="question-text">WHICH IMAGE APPLIES TO YOU</h2>
+                    </div>
+                    <div class="image-selection-container">
+                        <div class="image-option" data-option="image1">
+                            <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Image+1" alt="Image 1">
+                        </div>
+                        <div class="image-option" data-option="image2">
+                            <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Image+2" alt="Image 2">
+                        </div>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">4</div>
+                        <h2 class="question-text">DO YOU ALWAYS FEEL TIRED?</h2>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="50" class="slider" id="tiredSlider">
+                        <div class="slider-labels">
+                            <span>Always</span>
+                            <span>Often</span>
+                            <span>Average</span>
+                            <span>No</span>
+                            <span>Never</span>
+                        </div>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">5</div>
+                        <h2 class="question-text">DOES ANYONE IN YOUR FAMILY SUFFER FROM A HEART CONDITION?</h2>
+                    </div>
+                    <div class="tag-container">
+                        <button class="tag-button">Yes</button>
+                        <button class="tag-button">No</button>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">6</div>
+                        <h2 class="question-text">IS THERE A HISTORY OF DEPRESSION IN YOUR FAMILY?</h2>
+                    </div>
+                    <div class="tag-container">
+                        <button class="tag-button">Yes</button>
+                        <button class="tag-button">No</button>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
+                    </div>
+                </div>
+
+                <div class="question-section">
+                    <div class="question-header">
+                        <div class="question-number">7</div>
+                        <h2 class="question-text">ACTIVITIES, SELECT ALL THAT APPLY</h2>
+                    </div>
+                    <div class="tag-container">
+                        <button class="tag-button">Yoga</button>
+                        <button class="tag-button">Cycling</button>
+                        <button class="tag-button">Running</button>
+                        <button class="tag-button">Swimming</button>
+                        <button class="tag-button">Hiking</button>
+                        <button class="tag-button">Dancing</button>
+                        <button class="tag-button">Dog Walks</button>
+                        <button class="tag-button">Martial Arts</button>
+                    </div>
+                    <button class="toggle-manual-answer">Manually Enter Your Answer</button>
+                    <div class="manual-answer-container">
+                        <textarea placeholder="Type your answer here..."></textarea>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Question 2: Activity Slider -->
-        <div class="question-section">
-            <div class="question-number">2</div>
-            <div class="flex-1">
-                <h2 class="question-text">HOW ACTIVE ARE YOU?</h2>
-                <div class="slider-container">
-                    <input type="range" min="0" max="100" value="50" class="slider" id="activitySlider">
-                    <div class="slider-labels">
-                        <span>Very Inactive</span>
-                        <span>Inactive</span>
-                        <span>Average</span>
-                        <span>Active</span>
-                        <span>Very Active</span>
-                    </div>
-                </div>
+            <div class="action-buttons">
+                <button class="action-button secondary">Sign Up</button>
+                <button class="action-button primary">Submit Survey</button>
             </div>
         </div>
-
-        <!-- Question 3: Image Selection -->
-        <div class="question-section">
-            <div class="question-number">3</div>
-            <div class="flex-1">
-                <h2 class="question-text">WHICH IMAGE APPLIES TO YOU</h2>
-                <div class="image-selection-container">
-                    <div class="image-option" data-option="image1">
-                        <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Image+1" alt="Image 1">
-                        <div class="image-selection-indicator"></div>
-                    </div>
-                    <div class="image-option" data-option="image2">
-                        <img src="https://placehold.co/600x400/D1D5DB/1F2937?text=Image+2" alt="Image 2">
-                        <div class="image-selection-indicator"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 4: Tired Slider -->
-        <div class="question-section">
-            <div class="question-number">4</div>
-            <div class="flex-1">
-                <h2 class="question-text">DO YOU ALWAYS FEEL TIRED?</h2>
-                <div class="slider-container">
-                    <input type="range" min="0" max="100" value="50" class="slider" id="tiredSlider">
-                    <div class="slider-labels">
-                        <span>Always</span>
-                        <span>Often</span>
-                        <span>Average</span>
-                        <span>No</span>
-                        <span>Never</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 5: Family Heart Condition -->
-        <div class="question-section">
-            <div class="question-number">5</div>
-            <div class="flex-1">
-                <h2 class="question-text">DOES ANYONE IN YOUR FAMILY SUFFER FROM A HEART CONDITION?</h2>
-                <div class="tag-container">
-                    <button class="tag-button">Yes</button>
-                    <button class="tag-button">No</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 6: Family Depression History -->
-        <div class="question-section">
-            <div class="question-number">6</div>
-            <div class="flex-1">
-                <h2 class="question-text">IS THERE A HISTORY OF DEPRESSION IN YOUR FAMILY?</h2>
-                <div class="tag-container">
-                    <button class="tag-button">Yes</button>
-                    <button class="tag-button">No</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 7: Activities Multi-select -->
-        <div class="question-section">
-            <div class="question-number">7</div>
-            <div class="flex-1">
-                <h2 class="question-text">ACTIVITIES, SELECT ALL THAT APPLY</h2>
-                <div class="tag-container">
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button selected">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button selected">Cycling</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Dancing</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button selected">Dog Walks</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button selected">Martial Arts</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                    <button class="tag-button">Yoga</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="action-buttons">
-            <button class="action-button primary">Submit Survey</button>
-            <button class="action-button secondary">Sign Up</button>
-        </div>
-
     </div>
 
     <script>
-        // JavaScript to handle the interactive parts of the survey
+        // JavaScript for interactive elements
 
         // Image Selection Logic
-        const imageOptions = document.querySelectorAll('.image-option');
-        imageOptions.forEach(option => {
+        document.querySelectorAll('.image-option').forEach(option => {
             option.addEventListener('click', () => {
-                // Remove 'selected' class from all image options
-                imageOptions.forEach(opt => opt.classList.remove('selected'));
-                // Add 'selected' class to the clicked image option
+                document.querySelectorAll('.image-option').forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
-                updateProgress();
             });
         });
 
-        // Tag Multi-select Logic
-        const tagButtons = document.querySelectorAll('.tag-button');
-        tagButtons.forEach(button => {
+        // Tag Selection Logic
+        document.querySelectorAll('.tag-button').forEach(button => {
             button.addEventListener('click', () => {
                 button.classList.toggle('selected');
-                updateProgress();
             });
         });
 
-        // Progress handling
-        function getSliderAnswered(slider) {
-            // Consider answered if different from default 50
-            return slider && slider.value && slider.value !== '50';
-        }
-
-        function updateProgress() {
-            const sliders = [document.getElementById('healthSlider'), document.getElementById('activitySlider'), document.getElementById('tiredSlider')];
-            let answered = 0;
-
-            sliders.forEach(s => { if (getSliderAnswered(s)) answered++; });
-            if (document.querySelector('.image-option.selected')) answered++;
-            // Consider question 5 and 6 answered when any tag-button in that question toggled
-            const q5 = Array.from(document.querySelectorAll('.question-section'))[4];
-            const q6 = Array.from(document.querySelectorAll('.question-section'))[5];
-            const q7 = Array.from(document.querySelectorAll('.question-section'))[6];
-
-            function tagsAnswered(section) {
-                if (!section) return false;
-                const tags = section.querySelectorAll('.tag-button');
-                return Array.from(tags).some(t => t.classList.contains('selected'));
-            }
-
-            if (tagsAnswered(q5)) answered++;
-            if (tagsAnswered(q6)) answered++;
-            if (tagsAnswered(q7)) answered++;
-
-            const total = 7; // number of questions
-            const percent = Math.round((answered / total) * 100);
-            let bar = document.querySelector('.progress-bar');
-            if (bar) bar.style.width = percent + '%';
-            let pctText = document.querySelector('#progressPercent');
-            if (pctText) pctText.textContent = percent + '%';
-        }
-
-        // Wire sliders to progress updates
-        ['healthSlider','activitySlider','tiredSlider'].forEach(id => {
-            const s = document.getElementById(id);
-            if (s) s.addEventListener('input', updateProgress);
-        });
-
-        // initialize progress after DOM load
-        window.addEventListener('load', () => {
-            // insert progress UI at top of card
-            const card = document.querySelector('.survey-card');
-            if (card) {
-                const meta = document.createElement('div');
-                meta.className = 'progress-meta';
-                meta.innerHTML = '<div>Progress</div><div id="progressPercent">0%</div>';
-                const wrap = document.createElement('div');
-                wrap.className = 'progress-wrap';
-                wrap.innerHTML = '<div class="progress-bar"></div>';
-                card.insertBefore(meta, card.firstChild);
-                card.insertBefore(wrap, card.firstChild.nextSibling);
-            }
-            updateProgress();
+        // Manual Answer Toggle
+        document.querySelectorAll('.toggle-manual-answer').forEach(button => {
+            button.addEventListener('click', () => {
+                const container = button.nextElementSibling;
+                container.classList.toggle('active');
+                if (button.textContent === 'Manually Enter Your Answer') {
+                    button.textContent = 'Hide Manual Answer';
+                } else {
+                    button.textContent = 'Manually Enter Your Answer';
+                }
+            });
         });
     </script>
 
