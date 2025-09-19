@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MantraPath Survey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="sign-up-page">
+  <div class="frame-1">
+    <div
+      class="image-overlay"
+      style="
+        background: url(image-overlay0.png) center;
+        background-size: cover;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="image-overlay2">
+        <div class="mantra-path">MantraPath</div>
+        <div class="your-ai-powered-wellness-companion">
+          Your AI-powered wellness companion
+        </div>
+        <div class="register-button">
+          <div class="register">Sign In</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="frame-2">
+    <div class="heading-and-sub-heading">
+      <div class="sign-up-to-mantra-path">
+        <span>
+          <span class="sign-up-to-mantra-path-span">Sign Up to</span>
+          <span class="sign-up-to-mantra-path-span2">MantraPath</span>
+        </span>
+      </div>
+      <div class="start-your-journey-to-better-mental-wellness">
+        Start your journey to better mental wellness
+      </div>
+    </div>
+    <div class="info">
+      <div class="frame-9">
+        <div class="f-name">
+          <div class="t-field">
+            <div class="wrap">
+              <div class="value">John</div>
+              <div class="label-focus">
+                <div class="mask-label"></div>
+                <div class="label">First Name*</div>
+              </div>
+              <div class="end-adornment"></div>
+            </div>
+          </div>
+        </div>
+        <div class="l-name">
+          <div class="t-field">
+            <div class="wrap">
+              <div class="value">Doe</div>
+              <div class="label-focus">
+                <div class="mask-label"></div>
+                <div class="label">Last Name*</div>
+              </div>
+              <div class="end-adornment"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-4">
+        <div class="t-field2">
+          <div class="wrap">
+            <div class="value">your@email.com</div>
+            <div class="label-focus">
+              <div class="mask-label"></div>
+              <div class="label">Email*</div>
+            </div>
+            <div class="end-adornment"></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-7">
+        <div class="t-field2">
+          <div class="wrap">
+            <div class="value">johndoe</div>
+            <div class="label-focus">
+              <div class="mask-label"></div>
+              <div class="label">Username*</div>
+            </div>
+            <div class="end-adornment"></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-5">
+        <div class="t-field2">
+          <div class="wrap">
+            <div class="value">Enter your password</div>
+            <div class="label-focus">
+              <div class="mask-label"></div>
+              <div class="label">Password</div>
+            </div>
+            <div class="end-adornment"></div>
+          </div>
+        </div>
+      </div>
+      <div class="frame-6">
+        <div class="t-field2">
+          <div class="wrap">
+            <div class="value">Re-enter your password</div>
+            <div class="label-focus">
+              <div class="mask-label"></div>
+              <div class="label">Re-enter Password</div>
+            </div>
+            <div class="end-adornment"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="button">
+      <div class="sign-up">Sign Up</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Auth guard: ensure a valid client-side session token exists before showing this page -->
+<script>
+  (function(){
+    function redirectToLanding() {
+      // clear any stale token and go back to landing page
+      try { sessionStorage.removeItem('mantrapath_auth'); } catch(e){}
+      // use location.replace to avoid keeping PRO in history when redirecting
+      location.replace('index.html');
+    }
+
+    function isTokenValid(raw) {
+      if (!raw) return false;
+      try {
+        const parsed = JSON.parse(atob(raw));
+        if (!parsed || !parsed.e) return false;
+        return Date.now() < parsed.e;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    // On page load, verify token
+    const raw = sessionStorage.getItem('mantrapath_auth');
+    if (!isTokenValid(raw)) {
+      redirectToLanding();
+      return;
+    }
+
+    // Add a visible Sign Out control for users
+    const signOutBtn = document.createElement('button');
+    signOutBtn.textContent = 'Sign Out';
+    signOutBtn.style.position = 'fixed';
+    signOutBtn.style.top = '12px';
+    signOutBtn.style.right = '12px';
+    signOutBtn.style.padding = '0.5rem 1rem';
+    signOutBtn.style.borderRadius = '9999px';
+    signOutBtn.style.background = '#ef4444';
+    signOutBtn.style.color = 'white';
+    signOutBtn.style.border = 'none';
+    signOutBtn.style.cursor = 'pointer';
+    signOutBtn.addEventListener('click', function(){
+      try { sessionStorage.removeItem('mantrapath_auth'); } catch(e){}
+      location.replace('index.html');
+    });
+    document.body.appendChild(signOutBtn);
+  })();
+</script>
+</body>
+
+</html>
+
+
+
+
+
+
+

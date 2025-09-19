@@ -535,7 +535,7 @@
             </div>
 
             <div class="action-buttons">
-                <button class="action-button secondary">Sign Up</button>
+                <button id="signupBtn" class="action-button secondary">Sign Up</button>
                 <button class="action-button primary">Submit Survey</button>
             </div>
         </div>
@@ -585,6 +585,41 @@
                 }
             });
         });
+
+        // --- Secure Sign Up navigation ---
+        // When the Sign Up button is clicked we create a short-lived session token
+        // stored in sessionStorage and then navigate to PRO.HTML. The PRO page
+        // will check this token and redirect back if it's missing/invalid.
+        // Note: This is a client-side guard suitable for demo/static sites. For
+        // production, validate tokens server-side and use HTTPS and proper auth.
+        (function(){
+            const signupBtn = document.getElementById('signupBtn');
+            if (!signupBtn) return;
+
+            function generateToken() {
+                // create a random token + expiry encoded in base64
+                const rand = crypto.getRandomValues(new Uint8Array(16));
+                const token = Array.from(rand).map(b => b.toString(16).padStart(2,'0')).join('');
+                const expiry = Date.now() + 5 * 60 * 1000; // 5 minutes
+                return btoa(JSON.stringify({t: token, e: expiry}));
+            }
+
+            signupBtn.addEventListener('click', (e) => {
+                // create token and store in sessionStorage
+                try {
+                    const secureToken = generateToken();
+                    sessionStorage.setItem('mantrapath_auth', secureToken);
+
+                    // navigate to PRO.HTML (case-insensitive path allowed)
+                    // Use location.assign so back button behaves normally
+                    location.assign('PRO.HTML');
+                } catch (err) {
+                    console.error('Failed to create session token', err);
+                    // fall back to direct navigation
+                    location.assign('PRO.HTML');
+                }
+            });
+        })();
     </script>
 
 </body>
