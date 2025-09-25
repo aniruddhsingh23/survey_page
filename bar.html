@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Wellness Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Base and Classic Theme */
+        .classic-theme {
+            background-color: #f0f4f8;
+        }
+        .classic-theme .card {
+            background-color: #ffffff;
+        }
+        .classic-theme .text-primary {
+            color: #1f2937; /* gray-800 */
+        }
+        .classic-theme .text-secondary {
+            color: #374151; /* gray-700 */
+        }
+        .classic-theme .text-tertiary {
+            color: #6b7280; /* gray-500 */
+        }
+
+        /* Dark Theme */
+        .dark-theme {
+            background-color: #1f2937; /* gray-800 */
+        }
+        .dark-theme .card {
+            background-color: #111827; /* gray-900 */
+        }
+        .dark-theme .text-primary {
+            color: #f3f4f6; /* gray-100 */
+        }
+        .dark-theme .text-secondary {
+            color: #e5e7eb; /* gray-200 */
+        }
+        .dark-theme .text-tertiary {
+            color: #9ca3af; /* gray-400 */
+        }
+
+        /* Light Theme */
+        .light-theme {
+            background-color: #ffffff;
+        }
+        .light-theme .card {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .light-theme .text-primary {
+            color: #111827; /* gray-900 */
+        }
+        .light-theme .text-secondary {
+            color: #374151; /* gray-700 */
+        }
+        .light-theme .text-tertiary {
+            color: #6b7280; /* gray-500 */
+        }
+    </style>
+</head>
+<body class="classic-theme flex items-center justify-center min-h-screen p-4">
+
+    <div class="card p-6 md:p-8 rounded-2xl shadow-xl w-full max-w-2xl">
+        <!-- Header Section -->
+        <header class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 border-b border-gray-200 pb-4">
+            <div class="flex items-center space-x-3 mb-4 sm:mb-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15L6 12l1.41-1.41L11 15.17l4.59-4.58L17 12l-6 6z"/>
+                </svg>
+                <h1 class="text-xl md:text-2xl font-semibold text-primary">Your Wellness Journey</h1>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button id="autoThemeBtn" class="bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-md transition-all duration-300 hover:bg-gray-100 active:bg-gray-200">
+                    Auto Theme
+                </button>
+                <div class="relative inline-block">
+                    <button id="themeDropdownBtn" class="flex items-center space-x-1 cursor-pointer bg-white text-gray-800 px-4 py-2 rounded-full text-sm font-medium shadow-md transition-all duration-300 hover:bg-gray-100 active:bg-gray-200">
+                        <span class="text-xs font-normal text-tertiary">Theme: <span id="currentTheme" class="font-medium text-primary">Classic</span></span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400 ml-1 transition-transform duration-200" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div id="themeOptions" class="hidden absolute top-full mt-2 right-0 bg-white border border-gray-200 rounded-lg shadow-lg w-32 z-10 overflow-hidden">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-theme="classic">Classic</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-theme="dark">Dark</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" data-theme="light">Light</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Section -->
+        <main>
+            <!-- Wellness Score Section -->
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg md:text-xl font-medium text-secondary">Wellness Score</h2>
+                <span id="score" class="text-3xl md:text-4xl font-bold transition-all duration-500 ease-in-out">30%</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2 overflow-hidden">
+                <div id="progressBar" class="h-2.5 rounded-full transition-all duration-700 ease-in-out" style="width: 30%;"></div>
+            </div>
+
+            <p class="text-sm text-tertiary mb-6">
+                Based on your recent mood patterns and activities
+            </p>
+        </main>
+
+        <!-- Dynamic Content Section -->
+        <section class="mt-8 text-center text-gray-600">
+            <div id="message" class="text-lg font-medium transition-opacity duration-300">
+                Keep up the great work! Your journey is just beginning.
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scoreElement = document.getElementById('score');
+            const progressBar = document.getElementById('progressBar');
+            const messageElement = document.getElementById('message');
+            const autoThemeBtn = document.getElementById('autoThemeBtn');
+            const themeDropdownBtn = document.getElementById('themeDropdownBtn');
+            const themeOptions = document.getElementById('themeOptions');
+            const currentThemeElement = document.getElementById('currentTheme');
+            const body = document.body;
+            const chevron = themeDropdownBtn.querySelector('svg');
+
+            function setTheme(themeName) {
+                body.classList.remove('classic-theme', 'dark-theme', 'light-theme');
+                body.classList.add(`${themeName}-theme`);
+                currentThemeElement.innerText = themeName.charAt(0).toUpperCase() + themeName.slice(1);
+            }
+
+            function applyAutoTheme() {
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setTheme('dark');
+                } else {
+                    setTheme('classic');
+                }
+            }
+
+            function updateUI(newScore) {
+                let startScore = parseInt(scoreElement.innerText);
+                let duration = 500;
+                let startTime = null;
+
+                function animateScore(timestamp) {
+                    if (!startTime) startTime = timestamp;
+                    const progress = timestamp - startTime;
+                    const value = Math.min(progress / duration, 1);
+                    const animatedScore = Math.floor(value * (newScore - startScore) + startScore);
+                    scoreElement.innerText = `${animatedScore}%`;
+                    if (progress < duration) {
+                        requestAnimationFrame(animateScore);
+                    } else {
+                        scoreElement.innerText = `${newScore}%`;
+                    }
+                }
+                requestAnimationFrame(animateScore);
+
+                let barColorClass, textColorClass;
+                if (newScore < 50) {
+                    barColorClass = 'bg-red-500';
+                    textColorClass = 'text-red-500';
+                } else if (newScore < 80) {
+                    barColorClass = 'bg-yellow-500';
+                    textColorClass = 'text-yellow-500';
+                } else {
+                    barColorClass = 'bg-green-500';
+                    textColorClass = 'text-green-500';
+                }
+
+                progressBar.style.width = `${newScore}%`;
+                progressBar.classList.remove('bg-red-500', 'bg-yellow-500', 'bg-green-500');
+                progressBar.classList.add(barColorClass);
+
+                scoreElement.classList.remove('text-red-500', 'text-yellow-500', 'text-green-500');
+                scoreElement.classList.add(textColorClass);
+
+                messageElement.classList.add('opacity-0');
+                setTimeout(() => {
+                    let message;
+                    if (newScore < 50) {
+                        message = "Your wellness score is low. Let's find ways to improve!";
+                    } else if (newScore < 80) {
+                        message = "You're doing great! A little effort goes a long way.";
+                    } else {
+                        message = "Excellent job! You are in peak wellness.";
+                    }
+                    messageElement.innerText = message;
+                    messageElement.classList.remove('opacity-0');
+                }, 300);
+            }
+
+            // Update the score on page load
+            const initialScore = Math.floor(Math.random() * 100) + 1;
+            updateUI(initialScore);
+
+            // Event Listeners
+            autoThemeBtn.addEventListener('click', () => {
+                applyAutoTheme();
+            });
+
+            themeDropdownBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = themeOptions.classList.toggle('hidden');
+                if (isHidden) {
+                    chevron.style.transform = 'rotate(0deg)';
+                } else {
+                    chevron.style.transform = 'rotate(180deg)';
+                }
+            });
+
+            themeOptions.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const theme = link.getAttribute('data-theme');
+                    setTheme(theme);
+                    themeOptions.classList.add('hidden');
+                    chevron.style.transform = 'rotate(0deg)';
+                });
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!themeDropdownBtn.contains(e.target) && !themeOptions.contains(e.target)) {
+                    themeOptions.classList.add('hidden');
+                    chevron.style.transform = 'rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
